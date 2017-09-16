@@ -1,8 +1,9 @@
 const R = require('ramda');
 const {
-  mapIndexed,
   createCircle
 } = require('bs-geometric-forms');
+
+const mapIndexed = R.addIndex(R.map);
 
 // Picks in diagonal x = 0.71 and y = 0.7
 function pgPositions() {
