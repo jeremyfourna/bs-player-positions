@@ -5,7 +5,7 @@ const {
 
 const mapIndexed = R.addIndex(R.map);
 
-// Picks in diagonal x = 0.71 and y = 0.7
+// pgPositions :: a -> object
 function pgPositions() {
   // Positions regarding space around PG
   return {
@@ -66,6 +66,7 @@ function pgPositions() {
   };
 }
 
+// sgPositions :: a -> object
 function sgPositions() {
   return {
     // Positions regarding space around SG left
@@ -187,6 +188,7 @@ function sgPositions() {
   };
 }
 
+// sfPositions :: a -> object
 function sfPositions() {
   return {
     // Positions regarding space around SF left
@@ -316,6 +318,7 @@ function sfPositions() {
   };
 }
 
+// cornerPositions :: a -> object
 function cornerPositions() {
   return {
     // Positions regarding space around corner left
@@ -395,6 +398,7 @@ function cornerPositions() {
   };
 }
 
+// pfPositions :: a -> object
 function pfPositions() {
   return {
     // Positions regarding space around PF left
@@ -579,6 +583,7 @@ function pfPositions() {
   };
 }
 
+// cPositions :: a -> object
 function cPositions() {
   return {
     // Positions regarding space around C left
@@ -719,6 +724,7 @@ function cPositions() {
   };
 }
 
+// underRingPositions :: a -> object
 function underRingPositions() {
   return {
     // Positions regarding space around ring top
@@ -755,6 +761,7 @@ function underRingPositions() {
   };
 }
 
+// touchPositions :: a -> object
 function touchPositions() {
   return {
     // Positions regarding space around outOfBound top
@@ -773,6 +780,7 @@ function touchPositions() {
   };
 }
 
+// farAwayPositions :: a -> object
 function farAwayPositions() {
   return {
     // Other positions
@@ -792,6 +800,7 @@ function farAwayPositions() {
 }
 
 // Basket-Ball players positions for FIBA
+// playersPositions :: a -> object
 function playersPositions() {
   return R.reduce((prev, cur) => R.mergeDeepLeft(prev, cur), {}, [
     pgPositions(),
@@ -806,6 +815,7 @@ function playersPositions() {
   ]);
 }
 
+// playersPositionsGrouped :: a -> array
 function playersPositionsGrouped() {
   return [
     ['PG positions', pgPositions()],
@@ -820,6 +830,7 @@ function playersPositionsGrouped() {
   ];
 }
 
+// playersPositionsConfigZoomed :: (number, object) -> object
 function playersPositionsConfigZoomed(zoomSize, playersPosConfig) {
   function zoom(courtZoom) {
     return R.map(() => ({
@@ -831,6 +842,7 @@ function playersPositionsConfigZoomed(zoomSize, playersPosConfig) {
   return R.evolve(zoom(zoomSize), playersPosConfig);
 }
 
+// generatePlayersPositions :: (number, list, Node) -> Node
 function generatePlayersPositions(wishedZoom, playersPositionsSelected, context) {
   const colorConditions = R.cond([
     [R.equals(0), R.always('lightskyblue')],
@@ -853,9 +865,11 @@ function generatePlayersPositions(wishedZoom, playersPositionsSelected, context)
       context
     );
   }, playersPositionsSelected);
+
+  return context;
 }
 
-exports.playersPositions = playersPositions;
-exports.playersPositionsConfigZoomed = playersPositionsConfigZoomed;
-exports.generatePlayersPositions = generatePlayersPositions;
-exports.playersPositionsGrouped = playersPositionsGrouped;
+exports.playersPositions = R.curry(playersPositions);
+exports.playersPositionsConfigZoomed = R.curry(playersPositionsConfigZoomed);
+exports.generatePlayersPositions = R.curry(generatePlayersPositions);
+exports.playersPositionsGrouped = R.curry(playersPositionsGrouped);
